@@ -71,6 +71,8 @@ resource "aws_db_instance" "this" {
   backup_window              = var.backup_window
   copy_tags_to_snapshot      = var.copy_tags_to_snapshot
   
+  engine_lifecycle_support = var.engine_lifecycle_support
+
   tags = {
     Name        = "${local.prefix}-rds"
   }

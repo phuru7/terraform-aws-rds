@@ -141,3 +141,9 @@ variable "copy_tags_to_snapshot" {
   type        = bool
   default     = true
 }
+
+variable "engine_lifecycle_support" {
+  description = "RDS extended support: open-source-rds-extended-support | open-source-rds-extended-support-disabled"
+  type        = string
+  default     = "open-source-rds-extended-support-disabled"
+}
