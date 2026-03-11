@@ -64,6 +64,12 @@ resource "aws_db_instance" "this" {
 
   storage_encrypted = var.storage_encrypted
   kms_key_id        = var.kms_key_id != "" ? var.kms_key_id : null
+
+  auto_minor_version_upgrade = var.auto_minor_version_upgrade
+  maintenance_window         = var.maintenance_window
+  backup_retention_period    = var.backup_retention_period
+  backup_window              = var.backup_window
+  copy_tags_to_snapshot      = var.copy_tags_to_snapshot
   
   tags = {
     Name        = "${local.prefix}-rds"

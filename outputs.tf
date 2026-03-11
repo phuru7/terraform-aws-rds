@@ -24,3 +24,15 @@ output "port" {
 output "db_name" {
   value = aws_db_instance.this.db_name
 }
+
+output "maintenance_window" {
+  value = aws_db_instance.this.maintenance_window
+}
+
+output "backup_window" {
+  value = aws_db_instance.this.backup_window
+}
+
+output "backup_retention_period" {
+  value = aws_db_instance.this.backup_retention_period
+}

@@ -110,3 +110,34 @@ variable "kms_key_id" {
   type        = string
   default     = ""
 }
+
+# ── Maintenance & Backups ─────────────────────────────────
+variable "auto_minor_version_upgrade" {
+  description = "Enable auto minor version upgrade"
+  type        = bool
+  default     = true
+}
+
+variable "maintenance_window" {
+  description = "Maintenance window (ddd:hh24:mi-ddd:hh24:mi)"
+  type        = string
+  default     = "sun:09:00-sun:09:30"
+}
+
+variable "backup_retention_period" {
+  description = "Backup retention period in days"
+  type        = number
+  default     = 7
+}
+
+variable "backup_window" {
+  description = "Backup window (hh24:mi-hh24:mi)"
+  type        = string
+  default     = "10:00-10:30"
+}
+
+variable "copy_tags_to_snapshot" {
+  description = "Copy tags to snapshots"
+  type        = bool
+  default     = true
+}
