@@ -1,0 +1,112 @@
+# ── Identity ──────────────────────────────────────────────
+variable "env" {
+  description = "Environment: dev | qa | prod"
+  type        = string
+  default     = "dev"
+}
+
+variable "org" {
+  description = "Organization name"
+  type        = string
+}
+
+variable "applicationname" {
+  description = "Project or application name"
+  type        = string
+}
+
+# ── Subnet Group ──────────────────────────────────────────
+variable "subnet_ids" {
+  description = "List of subnet IDs for the DB subnet group"
+  type        = list(string)
+}
+
+# ── Security Group ────────────────────────────────────────
+variable "vpc_id" {
+  description = "VPC ID where the security group will be created"
+  type        = string
+}
+
+variable "ingress_rules" {
+  description = "List of inbound rules for the security group"
+  type = list(object({
+    description     = string
+    from_port       = number
+    to_port         = number
+    protocol        = string
+    cidr_blocks     = optional(list(string), [])
+    security_groups = optional(list(string), [])
+  }))
+  default = []
+}
+
+# ── RDS Instance ──────────────────────────────────────────
+variable "engine" {
+  description = "Database engine type"
+  type        = string
+  default     = "postgres"
+}
+
+variable "engine_version" {
+  description = "PostgreSQL engine version"
+  type        = string
+  default     = "16.10"
+}
+
+variable "instance_class" {
+  description = "RDS instance type"
+  type        = string
+  default     = "db.t3.micro"
+}
+
+variable "allocated_storage" {
+  description = "Allocated storage size in GB"
+  type        = number
+  default     = 20
+}
+
+variable "db_name" {
+  description = "Database name"
+  type        = string
+}
+
+variable "username" {
+  description = "Master username for the database"
+  type        = string
+}
+
+variable "password" {
+  description = "Master password for the database"
+  type        = string
+  sensitive   = true
+}
+
+variable "multi_az" {
+  description = "Enable Multi-AZ deployment"
+  type        = bool
+  default     = false
+}
+
+variable "deletion_protection" {
+  description = "Enable deletion protection on the RDS instance"
+  type        = bool
+  default     = true
+}
+
+variable "skip_final_snapshot" {
+  description = "Skip final snapshot before deletion"
+  type        = bool
+  default     = true
+}
+
+variable "storage_encrypted" {
+  description = "Enable storage encryption"
+  type        = bool
+  default     = true
+}
+
+variable "kms_key_id" {
+  description = "KMS key ARN for encryption. If empty, uses AWS managed key"
+  type        = string
+  default     = ""
+}
