@@ -81,6 +81,12 @@ variable "password" {
   sensitive   = true
 }
 
+variable "port" {
+  description = "Database port"
+  type        = number
+  default     = 5432
+}
+
 variable "multi_az" {
   description = "Enable Multi-AZ deployment"
   type        = bool
@@ -111,7 +117,6 @@ variable "kms_key_id" {
   default     = ""
 }
 
-# ── Maintenance & Backups ─────────────────────────────────
 variable "auto_minor_version_upgrade" {
   description = "Enable auto minor version upgrade"
   type        = bool

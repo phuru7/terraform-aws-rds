@@ -4,20 +4,20 @@ locals {
 
 # ── Subnet Group ──────────────────────────────────────────
 resource "aws_db_subnet_group" "this" {
-  name       = "${local.prefix}-subnet-group"
+  name        = "${local.prefix}-subnet-group"
   description = "Subnet group for ${var.applicationname} - ${var.env}"
-  subnet_ids = var.subnet_ids
+  subnet_ids  = var.subnet_ids
 
   tags = {
-    Name        = "${local.prefix}-subnet-group"
+    Name = "${local.prefix}-subnet-group"
   }
 }
 
 # ── Security Group ────────────────────────────────────────
 resource "aws_security_group" "this" {
-  name   = "${local.prefix}-sg"
+  name        = "${local.prefix}-sg"
   description = "Security group for ${var.applicationname} RDS - ${var.env}"
-  vpc_id = var.vpc_id
+  vpc_id      = var.vpc_id
 
   dynamic "ingress" {
     for_each = var.ingress_rules
@@ -39,7 +39,7 @@ resource "aws_security_group" "this" {
   }
 
   tags = {
-    Name        = "${local.prefix}-sg"
+    Name = "${local.prefix}-sg"
   }
 }
 
@@ -54,6 +54,7 @@ resource "aws_db_instance" "this" {
   db_name  = var.db_name
   username = var.username
   password = var.password
+  port     = var.port
 
   db_subnet_group_name   = aws_db_subnet_group.this.name
   vpc_security_group_ids = [aws_security_group.this.id]
@@ -70,10 +71,10 @@ resource "aws_db_instance" "this" {
   backup_retention_period    = var.backup_retention_period
   backup_window              = var.backup_window
   copy_tags_to_snapshot      = var.copy_tags_to_snapshot
-  
+
   engine_lifecycle_support = var.engine_lifecycle_support
 
   tags = {
-    Name        = "${local.prefix}-rds"
+    Name = "${local.prefix}-rds"
   }
 }
