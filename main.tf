@@ -45,11 +45,12 @@ resource "aws_security_group" "this" {
 
 # ── RDS Instance ──────────────────────────────────────────
 resource "aws_db_instance" "this" {
-  identifier        = "${local.prefix}-rds"
-  engine            = var.engine
-  engine_version    = var.engine_version
-  instance_class    = var.instance_class
-  allocated_storage = var.allocated_storage
+  identifier          = "${local.prefix}-rds"
+  engine              = var.engine
+  engine_version      = var.engine_version
+  instance_class      = var.instance_class
+  allocated_storage   = var.allocated_storage
+  publicly_accessible = var.publicly_accessible
 
   db_name  = var.db_name
   username = var.username
@@ -85,7 +86,7 @@ resource "aws_db_instance" "this" {
       error_message = "skip_final_snapshot must be false in prod environment."
     }
   }
-  
+
   tags = {
     Name = "${local.prefix}-rds"
   }

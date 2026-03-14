@@ -65,6 +65,12 @@ variable "allocated_storage" {
   default     = 20
 }
 
+variable "publicly_accessible" {
+  description = "Whether the DB is publicly accessible"
+  type        = bool
+  default     = false
+}
+
 variable "db_name" {
   description = "Database name"
   type        = string
