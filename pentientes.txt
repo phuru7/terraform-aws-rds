@@ -1,3 +1,0 @@
-1. deshabilitar el soporte extendido OK 
-2. proteger contra la eliminacion del rds.
-3. 
