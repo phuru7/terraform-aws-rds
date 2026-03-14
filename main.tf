@@ -74,6 +74,18 @@ resource "aws_db_instance" "this" {
 
   engine_lifecycle_support = var.engine_lifecycle_support
 
+  lifecycle {
+    precondition {
+      condition     = var.env == "prod" ? var.deletion_protection == true : true
+      error_message = "deletion_protection must be true in prod environment."
+    }
+
+    precondition {
+      condition     = var.env == "prod" ? var.skip_final_snapshot == false : true
+      error_message = "skip_final_snapshot must be false in prod environment."
+    }
+  }
+  
   tags = {
     Name = "${local.prefix}-rds"
   }
