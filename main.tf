@@ -64,6 +64,7 @@ resource "aws_db_instance" "this" {
   deletion_protection = var.deletion_protection
   skip_final_snapshot = var.skip_final_snapshot
 
+  storage_type      = var.storage_type
   storage_encrypted = var.storage_encrypted
   kms_key_id        = var.kms_key_id != "" ? var.kms_key_id : null
 

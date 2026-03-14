@@ -111,6 +111,12 @@ variable "skip_final_snapshot" {
   default     = true
 }
 
+variable "storage_type" {
+  description = "Storage type: gp2 | gp3 | io1"
+  type        = string
+  default     = "gp3"
+}
+
 variable "storage_encrypted" {
   description = "Enable storage encryption"
   type        = bool
