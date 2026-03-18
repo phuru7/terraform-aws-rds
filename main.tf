@@ -15,7 +15,7 @@ resource "aws_db_subnet_group" "this" {
 
 # ── Security Group ────────────────────────────────────────
 resource "aws_security_group" "this" {
-  name        = "${local.prefix}-sg"
+  name        = "${local.prefix}-rds-sg"
   description = "Security group for ${var.applicationname} RDS - ${var.env}"
   vpc_id      = var.vpc_id
 
@@ -38,8 +38,12 @@ resource "aws_security_group" "this" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  lifecycle {
+    create_before_destroy = true
+  }
+
   tags = {
-    Name = "${local.prefix}-sg"
+    Name = "${local.prefix}-rds-sg"
   }
 }
 
