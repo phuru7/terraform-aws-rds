@@ -47,6 +47,27 @@ resource "aws_security_group" "this" {
   }
 }
 
+# ── Enhanced Monitoring IAM Role ──────────────────────────
+resource "aws_iam_role" "rds_monitoring" {
+  count = var.monitoring_interval > 0 ? 1 : 0
+  name  = "${local.prefix}-rds-monitoring-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action    = "sts:AssumeRole"
+      Effect    = "Allow"
+      Principal = { Service = "monitoring.rds.amazonaws.com" }
+    }]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "rds_monitoring" {
+  count      = var.monitoring_interval > 0 ? 1 : 0
+  role       = aws_iam_role.rds_monitoring[0].name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonRDSEnhancedMonitoringRole"
+}
+
 # ── RDS Instance ──────────────────────────────────────────
 resource "aws_db_instance" "this" {
   identifier          = "${local.prefix}-rds"
@@ -79,6 +100,14 @@ resource "aws_db_instance" "this" {
   copy_tags_to_snapshot      = var.copy_tags_to_snapshot
 
   engine_lifecycle_support = var.engine_lifecycle_support
+
+  # ── Monitoring ────────────────────────────────────────────
+  monitoring_interval                   = var.monitoring_interval
+  monitoring_role_arn                   = var.monitoring_interval > 0 ? aws_iam_role.rds_monitoring[0].arn : null
+  database_insights_mode                = var.database_insights_mode
+  performance_insights_enabled          = var.performance_insights_enabled
+  performance_insights_retention_period = var.performance_insights_enabled ? var.performance_insights_retention_period : null
+  enabled_cloudwatch_logs_exports       = var.enabled_cloudwatch_logs_exports
 
   lifecycle {
     precondition {

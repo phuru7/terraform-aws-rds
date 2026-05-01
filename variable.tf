@@ -164,3 +164,44 @@ variable "engine_lifecycle_support" {
   type        = string
   default     = "open-source-rds-extended-support-disabled"
 }
+
+# ── Monitoring ────────────────────────────────────────────
+variable "monitoring_interval" {
+  description = "Enhanced Monitoring interval in seconds: 0 (disabled), 1, 5, 10, 15, 30, 60"
+  type        = number
+  default     = 0
+
+  validation {
+    condition     = contains([0, 1, 5, 10, 15, 30, 60], var.monitoring_interval)
+    error_message = "Must be one of: 0, 1, 5, 10, 15, 30, 60."
+  }
+}
+
+variable "database_insights_mode" {
+  description = "Database Insights mode: standard | advanced"
+  type        = string
+  default     = "standard"
+
+  validation {
+    condition     = contains(["standard", "advanced"], var.database_insights_mode)
+    error_message = "Must be 'standard' or 'advanced'."
+  }
+}
+
+variable "performance_insights_enabled" {
+  description = "Enable Performance Insights"
+  type        = bool
+  default     = false
+}
+
+variable "performance_insights_retention_period" {
+  description = "Retention period in days: 7 (free), 31, 62... 731. Advanced mode requires >= 465"
+  type        = number
+  default     = 7
+}
+
+variable "enabled_cloudwatch_logs_exports" {
+  description = "Log types to export to CloudWatch: postgresql, upgrade, iam-db-auth-error"
+  type        = list(string)
+  default     = []
+}
