@@ -8,18 +8,21 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      - name: Install git-cliff
+        run: |
+          curl -sSL https://github.com/orhun/git-cliff/releases/download/v2.4.0/git-cliff-2.4.0-x86_64-unknown-linux-gnu.tar.gz \
+            | tar -xz --strip-components=1 -C /usr/local/bin git-cliff-2.4.0-x86_64-unknown-linux-gnu/git-cliff
+
       - name: Generate CHANGELOG
-        uses: orhun/git-cliff-action@v3
-        with:
-          config: cliff.toml
-          args: --verbose
-        env:
-          OUTPUT: CHANGELOG.md
+        run: git cliff --config cliff.toml --output CHANGELOG.md
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
